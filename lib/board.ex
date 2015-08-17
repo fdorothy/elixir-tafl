@@ -110,19 +110,11 @@ defmodule Board do
   end
 
   def captured?(state, [p1, p2]) do
-    case {state[:turn], piece(state, p1), ally?(state, p2)} do
-      {:a, :d, true} -> true
-      {:d, :a, true} -> true
-      _ -> false
-    end
+    ally?(state, p2) && (state[:turn] == :a && piece(state, p1) == :d) || (state[:turn] == :d && piece(state, p1) == :a)
   end
 
   def ally?(state, pt) do
-    cond do
-      tile(state, pt) == :x -> true
-      owner(piece(state, pt)) == state[:turn] -> true
-      true -> false
-    end
+    tile(state, pt) == :x || owner(piece(state, pt)) == state[:turn]
   end
 
   def king_surrounded?(state) do
